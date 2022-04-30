@@ -1,5 +1,9 @@
 node('docker'){
     stage("Build"){
-        sh "docker version"
+        checkout scm
+
+        sh """
+            docker build -t ikambarov/flaskex .
+        """
     }
 }
