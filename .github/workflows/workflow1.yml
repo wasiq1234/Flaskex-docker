@@ -1,0 +1,19 @@
+name: ci
+
+on:
+  push:
+    branches:
+      - 'main'
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Build Image
+        run: docker build -t ikambarov/flaskex:${{ github.sha }} .
+
+      - name: List Images
+        run: docker images
+      
