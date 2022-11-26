@@ -58,6 +58,6 @@ jobs:
           namespace:  default
 
       - name:
-        run: helm upgrade --install --set image=${{ secrets.DOCKERHUB_USERNAME }}/flaskex  --set tag=${{ github.sha }} flaskex-chart/
+        run: helm upgrade --install myapp --set image=${{ secrets.DOCKERHUB_USERNAME }}/flaskex  --set tag=${{ github.sha }} flaskex-chart/
 
       
