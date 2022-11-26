@@ -40,3 +40,24 @@ jobs:
         run: |
           docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/flaskex:${{ github.sha }}
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Clone Chart Repo
+        run: git clone https://github.com/ikambarov/flaskex-chart.git
+
+      - name: Setup KUBECONFIG
+        uses: vbem/kubeconfig4sa@v1
+        with:
+          server:     ${{ secrets.KUBEAPI_SERVER }}
+          ca-base64:  ${{ secrets.K8S_CA_BASE64 }}
+          token:      ${{ secrets.K8S_SA_TOKEN }}
+          namespace:  default
+
+      - name:
+        run: helm upgrade --install --set image=${{ secrets.DOCKERHUB_USERNAME }}/flaskex  --set tag=${{ github.sha }} flaskex-chart/
+
+      
