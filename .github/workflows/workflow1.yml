@@ -1,4 +1,4 @@
-name: ci
+name: workflow1
 
 on:
   push:
@@ -12,9 +12,17 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      # Static Code Scan 
+      - name: SonarCloud Scan
+        uses: sonarsource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.HUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
       - name: Build Image
-        run: docker build -t ikambarov/flaskex:${{ github.sha }} .
+        run: docker build -t username/flaskex:${{ github.sha }} .
 
       - name: List Images
         run: docker images
-      
+
+      # Image Scan
