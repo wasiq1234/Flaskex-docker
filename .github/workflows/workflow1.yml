@@ -25,4 +25,4 @@ jobs:
       - name: List Images
         run: docker images
 
-      # Image Scan 
+      # Image Scan
